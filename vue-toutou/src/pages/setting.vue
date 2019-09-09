@@ -1,11 +1,14 @@
 <template>
     <div>
         <div class="toolbar">
-            <span class="backBtn" v-on:click="$emit('more', 'hide')">
+            <!-- <span class="backBtn" v-on:click="$emit('more', 'hide')">
                 <a></a>
-            </span>
+            </span> -->
+            <router-link tag="span" to="/page/" class="backBtn">
+                <a></a>
+            </router-link>
             <span class="title">
-                <a href="">频道管理</a>
+                <a href="">频靓管睆</a>
             </span>
         </div>
         <ul class="controlDetail">

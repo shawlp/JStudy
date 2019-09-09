@@ -6,7 +6,9 @@ export default {
     props: ['title', 'imageList'],
     methods: {
         skip(e) {
-            console.log('skip', e);
+            this.$router.push({
+                path: '/page/detail/' + 'shaw'
+            })
         }
     }
 }

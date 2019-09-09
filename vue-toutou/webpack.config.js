@@ -25,7 +25,8 @@ module.exports = {
                     options: {
                         presets: ['@babel/preset-env'],
                         plugins: [
-                            ['@babel/plugin-proposal-decorators', {legacy: true}]
+                            ['@babel/plugin-proposal-decorators', {legacy: true}],
+                            ['babel-plugin-transform-imports', {preventFullImport: false}]
                         ]
                     }
                 }
@@ -74,11 +75,41 @@ module.exports = {
             app.get('/price', function (req, res) {
                 res.send(JSON.stringify({
                     infos: [
-                        {price: 23 * Math.random()},
-                        {price: 23 * Math.random()}
+                        {
+                            area: '北京',
+                            price: 23 * Math.random()
+                        },
+                        {
+                            area: '上海',
+                            price: 23 * Math.random()
+                        },
+                        {
+                            area: '深圳',
+                            price: 23 * Math.random()
+                        }
                     ]
                 }));
             });
+
+            app.post('/login', function (req, res) {
+                // res.header('Set-Cookie', 'uid=yuanxin');
+                res.setHeader('Set-Cookie', 'uid=yuanxin;');
+                res.send(JSON.stringify({
+                    res: 1
+                }));
+            });
+
+            app.get('/log.gif', function (req, res) {
+                res.setHeader('Content-Type', 'image/gif');
+                res.send('');
+            });
+
+            app.get('/page/*', function (req, res) {
+                res.setHeader('Content-Type', 'text/html;charset=utf-8');
+                fs.readFile('./dist/index.html', function (err, content) {
+                   res.send(content);
+                });
+            });            
         }
     }
 }

@@ -2,7 +2,7 @@
     <div>
         <nav-head
             v-on:select="$emit('update:curTab', $event)"
-            v-on:more="$emit('more')"
+            v-on:more="getMoreEvent"
             v-bind:tabs="tabs"
         >
         </nav-head>
@@ -21,7 +21,7 @@
 <script>
 /**
  * @file tab容器页
- * @author shaw
+ * @author shaw   
  */    
 import Head from './head.vue';
 
@@ -31,7 +31,9 @@ export default {
     },
     props: ['tabs', 'curTab'],
     methods: {
-
+        getMoreEvent(event) {
+            this.$emit('more', event);
+        }
     }
 }
 </script>

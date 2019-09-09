@@ -9,7 +9,7 @@
                 {{tab.label}}
             </span>
         </div>
-        <a class="more_btn" v-on:click.prevent="$emit('more')">
+        <a class="more_btn" v-on:click="clicking">
             <span class="cross"></span>
         </a>
     </nav>
@@ -17,7 +17,14 @@
 
 <script>
     export default {
-        props: ['tabs']
+        props: ['tabs'],
+        methods: {
+            clicking() {
+                this.$emit('more', {
+                    name: 'shaw'
+                })
+            }
+        }
     }
 </script>
 

@@ -31,26 +31,16 @@
 import * as components from '../components/items/index';
 import Tab from '../components/tab.vue';
 import Loading from '../components/loading.vue';
+import Setting from './setting.vue';  
 import {TABS} from '../config';
 
 const convertPlainObject = obj => Object.keys(obj).reduce((res, key) => (res[key] = obj[key], res), {});
 
-export default {
+export default {   
 
     components: {
         Tab,
-        Setting: () => ({
-            component: import('../components/setting.vue'),
-                // .then(res =>
-                //     (new Promise(resolve => {
-                //         setTimeout(() => {
-                //             console.log('okokok');
-                //             resolve(res);
-                //         }, 3000);
-                //     }))
-                // ),
-            loading: Loading
-        }),
+        Setting,
         ...convertPlainObject(components)
     },
 
@@ -146,9 +136,9 @@ export default {
                 this.page = 'tab';
             }
             else {
-                this.page = 'setting';
+                this.$router.push('/page/setting');
             }
         }
     }
 };
-</script>
+</script>    
