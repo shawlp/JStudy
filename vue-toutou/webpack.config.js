@@ -6,18 +6,14 @@ const path = require('path');
 const fs = require('fs');
 
 module.exports = {
-
     mode: 'development',
-
     entry: __dirname + '/src/index.js',
-
     output: {
         path: __dirname + '/dist/',
         filename: 'index.js'
-    }
-
-    module: {
-        rule: [
+    },
+    module: {  
+        rules: [
             {
                 test: /\.vue$/,
                 use: 'vue-loader'
@@ -46,7 +42,7 @@ module.exports = {
                 ]
             }
         ]
-    },
+    },   
     plugins: [
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
@@ -61,7 +57,7 @@ module.exports = {
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
         compress: true,
-        host: '0.0.0.0',
+        host: 'localhost',
         port: 9000,
         disableHostCheck: true,
         before: function (app, server) {

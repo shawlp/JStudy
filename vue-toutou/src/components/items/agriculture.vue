@@ -29,7 +29,7 @@
                 this.requestPrice(area);
             }, 3000);
 
-            this.requestPrice(area);
+            this.requestPrice(this.area);
 
             this.$watch('area', area => debounce(area));
         },

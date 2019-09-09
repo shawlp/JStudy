@@ -3,9 +3,11 @@
 </template>
 
 <script>
-    props: ['tabs'],
-    methods: {
+    export default {
+        props: ['tabs'],
+        methods: {
 
+        }
     }
 </script>
 

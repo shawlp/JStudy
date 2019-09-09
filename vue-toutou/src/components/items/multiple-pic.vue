@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import BaseOptions from './Base.js';
+import BaseOptions from './base.js';
 /**
  * @file feed流多图item
  * @suthor shaw
@@ -30,4 +30,4 @@ export default {
 .item.multiple-image .image-list img {
     width: 33%;
 }            
-</style>
+</style>  
