@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style type="text/css">
+        .view {
+            height: 100vh;
+            width: 100vw;
+            padding: 0;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>逻辑层</title>
+</head>
+<body>
+    <script type="text/javascript" src="./bridge.js"></script>
+    <script type="text/javascript" src="./service.js"></script>
+    <script type="text/javascript">
+        // 定义页面的初始数据
+		window.appJson = {
+		  "pages": [
+		    "pages/index/index",
+		    "pages/detail/detail"
+		  ],
+		  "window": {
+		    "backgroundTextStyle": "light",
+		    "navigationBarBackgroundColor": "#fff",
+		    "navigationBarTitleText": "头条",
+		    "navigationBarTextStyle": "black"
+		  },
+		  "sitemapLocation": "sitemap.json"
+		};
+
+		Page('pages/index/index', {
+			data: {
+				name: 'yuanxin'
+			},
+
+			onShow() {
+				console.log('xxxx');
+			}
+		});        
+    </script>
+    <script type="text/javascript">
+        window.logic.init();
+    </script>
+</body>
+</html>
