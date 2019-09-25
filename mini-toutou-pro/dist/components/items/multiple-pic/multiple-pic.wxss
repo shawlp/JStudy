@@ -1,0 +1,15 @@
+/* components/items/multiple-pic/multiple-pic.wxss */
+.single-pic {
+  display: flex;
+}
+.single-pic .content {
+  flex: 2;
+  font-size: 8.5rpx;
+  padding-right: 12rpx;
+  color: orange;
+  font-size: 8rpx;
+}
+.single-pic image {
+  width: 33%;
+  display: block;
+}
