@@ -1,5 +1,7 @@
 import React, {Component, Suspense} from 'react';
+import {BrowserRouter, Route, Link} from 'react-router-dom';
 
+// 切换路由时，懒加载
 const SettingComponent = React.lazy(() => import('./setting'));
 
 export default class Tab extends Component {
@@ -25,14 +27,12 @@ export default class Tab extends Component {
           return <span key={tab.name}>{tab.name}</span>
         })
       }
-      <span onClick={this.onShowMore.bind(this)}>+</span>
-      {
-        this.state.showSetting 
-        ? <Suspense fallback={<div>loading...</div>}>
+      <Link to="/home/setting">+</Link>
+      <Route path="/home/setting" render={props => {
+        return <Suspense fallback={<div>loading...</div>}>
           <SettingComponent />
         </Suspense>
-        : null
-      }
+      }} />
     </div>)
   }
 }

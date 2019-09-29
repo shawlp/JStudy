@@ -8,7 +8,8 @@ module.exports = {
 
     output: {
         path: __dirname + '/dist/',
-        filename: 'index.js'
+        filename: 'index.js',
+        publicPath: '/'
     },
 
     module: {
@@ -58,6 +59,15 @@ module.exports = {
         port: 9000,
         disableHostCheck: true,
         before: function (app, server) {
+
+            app.get(/\/(home|detail|aaaa)/, function (req, res) {
+                const fileName = `./dist/html/index.html`;
+                fs.readFile(fileName, function (err, content) {
+                    res.setHeader('Content-Type', 'text/html');
+                    res.send(content);
+                });
+            });
+
             app.get('/list', function (req, res) {
                 const fileName = `./mock/list_${req.query.tab}.json`;
                 const backupFileName = `./mock/list.json`;

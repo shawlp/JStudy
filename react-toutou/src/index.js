@@ -4,6 +4,11 @@ import List from './list';
 import Tab from './tab';
 import * as components from './components/items';
 import TabContext from './tab-context'; 
+import store from './store';
+import {Provider, connect} from 'react-redux';
+// import {Provider, connect} from './fake-react-redux';
+import {BrowserRouter, Route, Link, Switch} from 'react-router-dom';
+import Detail from './detail'
 
 const TABS = [
 	{
@@ -45,11 +50,24 @@ class Main extends Component {
       showSetting: false
     };
 
-    this.getList()
+    this.reactiveList();
+  }
+
+  reactiveList() {
+    this.props.listUpdate(this.updateList.bind(this));
+
+    window.onscroll = () => {
+      this.props.listUpdate(this.updateList.bind(this));
+    }
+  }
+
+  updateList(dispatch) {
+    return this.getList()
       .then(({data}) => {
-        this.setState({
-          list: data
-        })
+        dispatch({
+          type: 'PUSH_LIST',
+          data
+        });
       });
   }
 
@@ -59,7 +77,8 @@ class Main extends Component {
   }
 
   skip() {
-    console.log('开始跳转！');
+    console.log('开始跳转！', this.props.history.push);
+    this.props.history.push('/detail/' + 'i124567' + Math.random() * 10);
   }
 
   render() {
@@ -67,12 +86,12 @@ class Main extends Component {
       <TabContext.Provider value={ALL_TAB}>
         <Tab tabs={TABS}></Tab>
         <List
-          dataSource={this.state.list}
+          dataSource={this.props.list}
           renderItem={item => {
             const type = item.type.replace(/^\w/, code => code.toUpperCase());
             const ItemComponent = components[type];
             return <ItemComponent 
-                    onClick={this.skip}
+                    onClick={this.skip.bind(this)}
                     data={item.data}
                   />
           }}
@@ -82,7 +101,38 @@ class Main extends Component {
   }
 }
 
+const App = connect(
+  function mapStateToProps(state) {
+    return {
+      list: state.list
+    }
+  },
+  function mapDispatchToProps(dispatch) {
+    return {
+      listUpdate: task => {
+        dispatch(task)
+      }
+    }
+  }
+)(Main);
+
+const AppContainer = () => {
+  const TopBar = () => {
+    return <div>我是404</div>;
+  }
+
+  return (<BrowserRouter>
+    <Switch>
+      <Route path="/home" component={App} />
+      <Route path="/detail/:id" component={Detail} />
+      <Route component={TopBar} />
+    </Switch>
+  </BrowserRouter>)
+}
+
 ReactDOM.render(
-  <Main></Main>,
+  <Provider store={store}>
+    <AppContainer />
+  </Provider>,
   document.getElementById('app')
 )

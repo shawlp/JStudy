@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import style from './setting.css';
 import TabContext from './tab-context';
+import {Provider, connect} from 'react-redux';
 
-export default class Setting extends Component {
+class Setting extends Component {
   static contextType = TabContext;
 
   render() {
@@ -15,3 +16,20 @@ export default class Setting extends Component {
     </div>)
   }
 }
+
+export default connect(
+  function mapStateToProps(state) {
+    console.log('setting', state);
+    return {
+      list: state.list
+    };
+  },
+
+  function mapDispatchToProps(dispatch) {
+    return {
+      listUpdate: task => {
+        dispatch(task);
+      }
+    };
+  }
+)(Setting);
