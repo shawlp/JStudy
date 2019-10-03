@@ -18,6 +18,10 @@ const reduxPromise = ({dispatch, getState}) => next => action => {
 	return next(action);
 };
 
-const store = createStore(toutiaProcessor, applyMiddleware(thunkMiddleware));
+function getDefaultState() {
+  return global.appData || {};
+}
+
+const store = createStore(toutiaProcessor, getDefaultState(), applyMiddleware(thunkMiddleware));
 
 export default store;

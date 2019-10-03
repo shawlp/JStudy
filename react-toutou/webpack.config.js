@@ -1,8 +1,9 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { SkeletonPlugin } = require('page-skeleton-webpack-plugin');
 const path = require('path');
 const fs = require('fs');
 
-module.exports = {
+let wepackConfig = {
 
     entry: __dirname + '/src/index.js',
 
@@ -80,3 +81,13 @@ module.exports = {
         }
     }
 };
+
+if (process.env.NODE_ENV === 'skeleton') {
+    wepackConfig.plugins.push(new SkeletonPlugin({
+        pathname: path.resolve(__dirname, `./skeleton`), // the path to store shell file
+        staticDir: path.resolve(__dirname, './dist'), // the same as the `output.path`
+        routes: ['/', '/home', '/detail/11112233'], // Which routes you want to generate skeleton screen
+    }))
+}
+
+module.exports =  wepackConfig;

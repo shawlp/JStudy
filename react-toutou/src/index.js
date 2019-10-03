@@ -47,7 +47,8 @@ class Main extends Component {
 
     this.state = {
       list: [],
-      showSetting: false
+      showSetting: false,
+      loading: true
     };
 
     this.reactiveList();
@@ -64,6 +65,9 @@ class Main extends Component {
   updateList(dispatch) {
     return this.getList()
       .then(({data}) => {
+        this.setState({
+          loading: false
+        });
         dispatch({
           type: 'PUSH_LIST',
           data
@@ -73,6 +77,11 @@ class Main extends Component {
 
   getList() {
     return fetch('http://localhost:9000/list')
+      .then(res => {
+        return new Promise(resolve => {
+          setTimeout(() => resolve(res), 3000)
+        })
+      })
       .then(res => res.json());
   }
 
@@ -82,21 +91,28 @@ class Main extends Component {
   }
 
   render() {
+    let html =  '<div>...loading</div>';
     return <div className="container">
-      <TabContext.Provider value={ALL_TAB}>
-        <Tab tabs={TABS}></Tab>
-        <List
-          dataSource={this.props.list}
-          renderItem={item => {
-            const type = item.type.replace(/^\w/, code => code.toUpperCase());
-            const ItemComponent = components[type];
-            return <ItemComponent 
-                    onClick={this.skip.bind(this)}
-                    data={item.data}
-                  />
-          }}
-        ></List>
+      {
+        this.state.loading ?
+        <div dangerouslySetInnerHTML={{__html: html}}></div>
+        : 
+        <TabContext.Provider value={ALL_TAB}>
+          <Tab tabs={TABS}></Tab>
+          <List
+            dataSource={this.props.list}
+            renderItem={item => {
+              const type = item.type.replace(/^\w/, code => code.toUpperCase());
+              const ItemComponent = components[type];
+              return <ItemComponent 
+                      onClick={this.skip.bind(this)}
+                      data={item.data}
+                    />
+            }}
+          ></List>
       </TabContext.Provider>
+      }
+
     </div>;
   }
 }
