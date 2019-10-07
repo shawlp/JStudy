@@ -5,7 +5,7 @@ const toutiaProcessor = (state = {list: []}, action) => {
   if (action.type === 'PUSH_LIST') {
     return {
       ...state,
-      list: state.list.concat(action.data)
+      list: state.list && state.list.concat(action.data)
     }
   }
   return state;
@@ -19,7 +19,7 @@ const reduxPromise = ({dispatch, getState}) => next => action => {
 };
 
 function getDefaultState() {
-  return global.appData || {};
+  return global.appData || {list: []};
 }
 
 const store = createStore(toutiaProcessor, getDefaultState(), applyMiddleware(thunkMiddleware));
