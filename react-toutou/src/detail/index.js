@@ -10,6 +10,7 @@ class content extends Component {
   }
 }
 
+// withRouter使得组件具有route相关的参数
 const ContentView = withRouter(connect(
   state => {
     return {

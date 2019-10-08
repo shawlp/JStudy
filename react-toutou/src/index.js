@@ -7,7 +7,7 @@ import TabContext from './tab-context';
 import store from './store';
 import {Provider, connect} from 'react-redux';
 // import {Provider, connect} from './fake-react-redux';
-import {BrowserRouter, Route, Link, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom';
 import Detail from './detail'
 
 const TABS = [
@@ -40,6 +40,20 @@ const ALL_TAB = [
 	}
 ];
 
+const createThrottle = (fn, delay = 100) => {
+  let status = 'START';
+  return () => {
+    if (status === 'WAITING') {
+      return;
+    }
+    status = 'WAITING';
+    setTimeout(() => {
+      fn && fn();
+      status = 'START';
+    }, delay);
+  }
+};
+
 class Main extends Component {
 
   constructor(props) {
@@ -53,12 +67,29 @@ class Main extends Component {
     this.reactiveList();
   }
 
+  listenScroll(func, THRESHOLD = 50) {
+    const throttle = createThrottle(() => {
+      func && typeof func === 'function' ? func() : null;
+    });
+
+    window.addEventListener('scroll', () => {
+      const offsetHeight = document.documentElement.offsetHeight;
+      const screenHeight = window.screen.height;
+      const scrollY = window.scrollY;
+      const gap = offsetHeight - screenHeight - scrollY;
+      if (gap < THRESHOLD) {
+        throttle()
+      }
+    })
+  }
+
   reactiveList() {
     this.props.listUpdate(this.updateList.bind(this));
 
-    window.onscroll = () => {
+    // 节流
+    this.listenScroll(() => {
       this.props.listUpdate(this.updateList.bind(this));
-    }
+    });
   }
 
   updateList(dispatch) {
@@ -109,6 +140,7 @@ const App = connect(
   },
   function mapDispatchToProps(dispatch) {
     return {
+      // //使用applyMiddleware(...middleware)中间件，可以让你在dispatch方法中传入函数
       listUpdate: task => {
         dispatch(task)
       }
@@ -121,13 +153,13 @@ const AppContainer = () => {
     return <div>我是404</div>;
   }
 
-  return (<BrowserRouter>
+  return (<Router>
     <Switch>
       <Route path="/home" component={App} />
       <Route path="/detail/:id" component={Detail} />
       <Route component={TopBar} />
     </Switch>
-  </BrowserRouter>)
+  </Router>)
 }
 
 ReactDOM.render(

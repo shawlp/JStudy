@@ -18,6 +18,8 @@ const reduxPromise = ({dispatch, getState}) => next => action => {
 	return next(action);
 };
 
+// 多个reducer可以使用combineReducers(reducers)，
+//使用applyMiddleware(...middleware)中间件，可以让你在dispatch方法中传入函数
 const store = createStore(toutiaProcessor, applyMiddleware(thunkMiddleware));
 
 export default store;
