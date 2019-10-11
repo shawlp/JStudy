@@ -1,15 +1,16 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { SkeletonPlugin } = require('page-skeleton-webpack-plugin');
 const path = require('path');
 const fs = require('fs');
 
-module.exports = {
+let webPackConfig = {
 
     entry: __dirname + '/src/index.js',
 
     output: {
-        path: __dirname + '/dist/',
+        path: __dirname + '/dist/static/js/',
         filename: 'index.js',
-        publicPath: '/'
+        publicPath: '//localhost:9000/static/js/'
     },
 
     module: {
@@ -43,7 +44,7 @@ module.exports = {
 
     plugins: [
         new HtmlWebpackPlugin({
-            filename: "html/index.html",
+            filename: __dirname + "/dist/html/index.html",
             template: "./html/index.html",
             hash: true,
             minify: {
@@ -72,11 +73,23 @@ module.exports = {
                 const fileName = `./mock/list_${req.query.tab}.json`;
                 const backupFileName = `./mock/list.json`;
                 fs.exists(fileName, function (exists) {
-                    fs.readFile(exists ? fileName : backupFileName, function (err, content) {
-                        res.send(content);
-                    });
+                    setTimeout(() => {
+                        fs.readFile(exists ? fileName : backupFileName, function (err, content) {
+                            res.send(content);
+                        });
+                    }, 1000);
                 });
             });
         }
     }
 };
+
+if (process.env.NODE_ENV === 'skeleton') {
+    webPackConfig.plugins.push(new SkeletonPlugin({
+        pathname: path.resolve(__dirname, `./skeleton`), // the path to store shell file
+        staticDir: path.resolve(__dirname, './dist'), // the same as the `output.path`
+        routes: ['/', '/home', '/detail/1112233'], // Which routes you want to generate skeleton screen
+    }));
+}
+
+module.exports = webPackConfig;
